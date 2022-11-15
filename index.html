@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <style>
+        h1 {
+            font-size: 40px;
+        }
+
+        .marque {
+            position: absolute;
+            z-index: -10;
+            
+        }
+
+        .scrollde{
+            scrolldelay:300;
+        }
+        body {
+            background-image: url("jchun.jpeg");
+            background-color: #cccccc;
+        }
+        .warn{
+            color:red;
+        }
+        .mainCard{
+            background-color: lightcoral;
+            width:20%;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <marquee class="marque scrollde" behavior=scroll direction="left" scrollamount="3.75" height="100%" width="100%">
+        <marquee class="scrollde" behavior=scroll direction="down" scrollamount="10" width="100%" height="100%">
+            <h1 class="warn">Justin Chungus is real <br>(Don't Let the government fool you)</h1>
+        </marquee>
+    </marquee>
+    <div class="mainCard">
+        <h2>
+            Input your geojsonfile: <br>
+        </h2>
+        <input type="file" id="fileinput" multiple /><br>
+        <h2>
+            Select your district number:
+        </h2>
+        <input type="number" id="dist" name="dist" min="1" max="100">
+        <br>
+
+        <button type="button" onclick = "calc()">
+            <h2>
+                <b>
+                    Calculate!
+                </b>
+            </h2>
+        </button>
+        <h2 id="placeholder">Results: #</h2>
+    </div>
+
+
+
+
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+
+    <script>
+    var dist1;
+    
+    async function calc(){
+        //alert("clicked")
+        finput = document.getElementById("fileinput").files[0];
+        //console.log(finput)
+        fiText = await finput.text();
+        //console.log(fiText)
+        var indexLol = document.getElementById("dist").value;
+        console.log(indexLol-1);
+        dist1 = JSON.parse(fiText).features[indexLol - 1];
+        var convexHull = turf.convex(dist1);
+        var tDist = turf.area(dist1)
+        var convexArea  = turf.area(convexHull)
+        var answer = tDist/convexArea
+        console.log(answer)  
+        result = document.getElementById("placeholder");
+        result.innerHTML = "Results: " + answer 
+        
+    }
+
+    </script>
+</body>
+
+</html>
