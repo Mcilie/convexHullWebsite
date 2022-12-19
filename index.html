@@ -21,22 +21,25 @@
         .marque {
             position: absolute;
             z-index: -10;
-            
+
         }
 
-        .scrollde{
-            scrolldelay:300;
+        .scrollde {
+            scrolldelay: 300;
         }
+
         body {
-            
-            background-color: #cccccc;
+
+            background-color: white;
         }
-        .warn{
-            color:red;
+
+        .warn {
+            color: red;
         }
-        .mainCard{
-            background-color: lightcoral;
-            width:20%;
+
+        .mainCard {
+            background-color: white;
+            width: 70%;
 
         }
     </style>
@@ -44,27 +47,29 @@
 
 <body>
 
-    
-    <div class="mainCard">
-        <h2>
-            Input your geojsonfile: <br>
-        </h2>
-        <input type="file" id="fileinput" multiple /><br>
-        <h2>
-            Select your district number:
-        </h2>
-        <input type="number" id="dist" name="dist" min="1" max="100">
-        <br>
+    <center>
 
-        <button type="button" onclick = "calc()">
+        <div class="mainCard">
             <h2>
-                <b>
-                    Calculate!
-                </b>
+                Input your geojsonfile: <br>
             </h2>
-        </button>
-        <h2 id="placeholder">Results: #</h2>
-    </div>
+            <input type="file" id="fileinput" multiple /><br>
+            <h2>
+                Select your district number:
+            </h2>
+            <!--<input type="number" id="dist" name="dist" min="1" max="100">-->
+            <br>
+
+            <button type="button" onclick="calc()">
+                <h2>
+                    <b>
+                        Calculate!
+                    </b>
+                </h2>
+            </button>
+            <h2 id="placeholder">Results: #<br></h2>
+        </div>
+    </center>
 
 
 
@@ -76,26 +81,33 @@
 
 
     <script>
-    var dist1;
-    
-    async function calc(){
-        //alert("clicked")
-        finput = document.getElementById("fileinput").files[0];
-        //console.log(finput)
-        fiText = await finput.text();
-        //console.log(fiText)
-        var indexLol = document.getElementById("dist").value;
-        console.log(indexLol-1);
-        dist1 = JSON.parse(fiText).features[indexLol - 1];
-        var convexHull = turf.convex(dist1);
-        var tDist = turf.area(dist1)
-        var convexArea  = turf.area(convexHull)
-        var answer = tDist/convexArea
-        console.log(answer)  
-        result = document.getElementById("placeholder");
-        result.innerHTML = "Results: " + answer 
-        
-    }
+        var dist1;
+
+        async function calc() {
+            //alert("clicked")
+            finput = document.getElementById("fileinput").files[0];
+            //console.log(finput)
+            fiText = await finput.text();
+            //console.log(fiText)
+            //var indexLol = document.getElementById("dist").value;
+            FETURES = JSON.parse(fiText).features;
+            console.log(FETURES.length);
+            //console.log(indexLol - 1);
+
+            for (var i = 0; i < FETURES.length; i++) {
+                var dist1 = JSON.parse(fiText).features[i];
+                var convexHull = turf.convex(dist1);
+                var tDist = turf.area(dist1)
+                var convexArea = turf.area(convexHull)
+                var answer = tDist / convexArea
+                console.log(answer);
+                result = document.getElementById("placeholder");
+                result.innerHTML +=  "District " + (i+1).toString() + " : " + answer.toString() +  "<br>"
+
+            }
+
+
+        }
 
     </script>
 </body>
